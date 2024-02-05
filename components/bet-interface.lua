@@ -44,7 +44,8 @@ return xml_gen.component(function ()
                             total = total + bet.amount
                         end
                         yield(xml.td {"$", tostring(total)})
-                    end
+                    end;
+                    xml.br;
                 });
 
                 local percent_for = 0
