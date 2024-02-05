@@ -4,9 +4,7 @@ local bootstrap_head = require("components.bootstrap-head")
 local betting = require("components.bet-interface")
 
 return html {charset="utf8"} {
-    bootstrap_head {title="Hello, World!"} {
-
-    };
+    bootstrap_head {title="FritBets"};
 
     body {
         h1 {class="text-center"} "FritBets";

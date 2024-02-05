@@ -7,10 +7,46 @@ local xml_gen = require("xml-generator")
 local xml = xml_gen.xml
 local betting = require("betting")
 
+local yield = coroutine.yield
+
 return xml_gen.component(function ()
     return xml.div {class="container"} {
-        xml_gen.html_table(betting.bets);
+        xml.table {
+            function ()
+                for name, bet in pairs(betting.bets) do
+                    yield (xml.table {
+                        xml.tr {
+                            xml.td "Gambler";
+                            xml.td {name}
+                        };
 
+                        xml.tr {
+                            xml.td "Amount";
+                            xml.td {"$", tostring(bet.amount), " ", bet.currency}
+                        };
+
+                        xml.tr {
+                            xml.td "In Favour?";
+                            xml.td {bet.in_favour and "Yes" or "No"}
+                        };
+                    })
+
+                    yield(xml.tr {xml.td {colspan=2, xml.hr}})
+                end
+
+                yield(xml.tr {
+                    xml.td "Total: ";
+                    function ()
+                        local total = 0
+                        for _, bet in pairs(betting.bets) do
+                            total = total + bet.amount
+                        end
+                        yield(xml.td {"$", tostring(total)})
+                    end
+                });
+            end;
+        };
+        xml.br;
         xml.h2 "Make new bet";
         xml.form {action="/bet", method="post"} {
             xml.div {class="form-group"} {
@@ -24,11 +60,7 @@ return xml_gen.component(function ()
             },
             xml.div {class="form-group"} {
                 xml.label {["for"]="currency"} "Currency",
-                xml.select {class="form-control", id="currency", name="currency"} {
-                    xml.option {value="USD"} "USD",
-                    xml.option {value="CAD"} "CAD",
-                    xml.option {value="AUD"} "AUD"
-                }
+                xml.input {type="text", class="form-control", id="currency", name="currency", required=true}
             },
             xml.div {class="form-group"} {
                 xml.label {["for"]="in_favour"} "In Favour ",
