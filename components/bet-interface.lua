@@ -6,6 +6,7 @@
 local xml_gen = require("xml-generator")
 local xml = xml_gen.xml
 local betting = require("betting")
+local tablex = require("pl.tablex")
 
 local yield = coroutine.yield
 
@@ -34,6 +35,7 @@ return xml_gen.component(function ()
                     yield(xml.tr {xml.td {colspan=2, xml.hr}})
                 end
 
+
                 yield(xml.tr {
                     xml.td "Total: ";
                     function ()
@@ -43,6 +45,21 @@ return xml_gen.component(function ()
                         end
                         yield(xml.td {"$", tostring(total)})
                     end
+                });
+
+                local percent_for = 0
+
+                for _, bet in pairs(betting.bets) do
+                    if bet.in_favour then
+                        percent_for = percent_for + 1
+                    end
+                end
+
+                percent_for = percent_for / #tablex.keys(betting.bets) * 100
+
+                yield(xml.tr {
+                    xml.td "Percent in Favour: ";
+                    xml.td {tostring(percent_for), "%"}
                 });
             end;
         };
