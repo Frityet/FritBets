@@ -13,6 +13,7 @@ dependencies = {
    "lua >= 5.1",
    "luaxmlgenerator >= 1.0.0",
    "luafilesystem",
+   "penlight"
 }
 build = {
    type = "command",

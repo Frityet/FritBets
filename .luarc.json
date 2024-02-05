@@ -19,10 +19,12 @@
         "duplicate-doc-field"
     ],
     "workspace.library": [
-        "lua_modules/lib/lua/5.4/",
-        "lua_modules/share/lua/5.4/",
         "/Users/frityet/Library/Application Support/Code/User/globalStorage/sumneko.lua/addonManager/addons/luafilesystem/module/library",
-        "/Users/frityet/Library/Application Support/Code/User/globalStorage/sumneko.lua/addonManager/addons/luvit/module/library"
+        "/Users/frityet/Library/Application Support/Code/User/globalStorage/sumneko.lua/addonManager/addons/luvit/module/library",
+        "/Users/frityet/Library/Application Support/Code/User/globalStorage/sumneko.lua/addonManager/addons/penlight/module/library",
+        "lua_modules/lib/lua/5.1/",
+        "lua_modules/share/lua/5.1/",
+        "${3rd}/lfs/library"
     ],
     "runtime.path": [
         "?.lua",
@@ -36,8 +38,8 @@
         ".luarocks"
     ],
     "workspace.checkThirdParty": false,
-    "runtime.plugin": "plugin.lua",
-    "misc.parameters": [
-        "--develop=true"
-    ]
+    // "runtime.plugin": "plugin.lua",
+    // "misc.parameters": [
+    //     "--develop=true"
+    // ]
 }

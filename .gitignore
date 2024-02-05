@@ -45,3 +45,5 @@ luac.out
 /.luarocks
 
 /build
+
+bets.lua

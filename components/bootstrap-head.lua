@@ -29,6 +29,30 @@ return xml_gen.component(function (args, kids)
             integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL",
             crossorigin="anonymous"
         };
+
+        --nice looking tables
+        xml_gen.style {
+            ["table"] = {
+                ["width"] = "100%",
+                ["margin-bottom"] = "1rem",
+                ["color"] = "#212529"
+            },
+            ["th"] = {
+                ["padding"] = "0.75rem",
+                ["vertical-align"] = "top",
+                ["border-top"] = "1px solid #dee2e6"
+            },
+            ["td"] = {
+                ["padding"] = "0.75rem",
+                ["vertical-align"] = "top",
+                ["border-top"] = "1px solid #dee2e6"
+            },
+            ["thead"] = {
+                ["background-color"] = "#e9ecef",
+                ["color"] = "#495057"
+            }
+        };
+
         kids;
 
         luajs;

@@ -7,8 +7,10 @@ package.cpath = string.format("lua_modules/lib/lua/%s/?.so;lua_modules/lib/lua/%
 local Path = require("path-utilities")
 local config = require("config")
 local http = require("http")
+local querystring = require("querystring")
 local xml_gen = require("xml-generator")
 local xml = xml_gen.xml
+local betting = require("betting")
 
 local build_dir, src_dir = Path.new(config.build_directory), Path.new(config.source_directory)
 
@@ -115,10 +117,62 @@ end
 _G.lua = _G
 _G.yield = coroutine.yield
 
+---@param req luvit.http.IncomingMessage
+---@param res luvit.http.ServerResponse
+---@param url string
+local function handle_post(req, res, url)
+    if not url == "/bet" then
+        local s = html_document(not_found)
+        res:setHeader("Content-Length", tostring(#s))
+        res.statusCode = 404
+        res:finish(s)
+        return
+    end
+
+    local body = ""
+    req:on("data", function (chunk) body = body..chunk end)
+
+    req:on("end", function ()
+        local data = querystring.parse(body)
+        local amount = tonumber(data.amount)
+        local name = data.name
+        if not amount then
+            local s = html_document(server_error {error="Invalid amount"})
+            res:setHeader("Content-Length", tostring(#s))
+            res.statusCode = 500
+            res:finish(s)
+            return
+        end
+
+        local currency = data.currency
+        if not currency then
+            local s = html_document(server_error {error="Invalid currency"})
+            res:setHeader("Content-Length", tostring(#s))
+            res.statusCode = 500
+            res:finish(s)
+            return
+        end
+
+        local in_favour = data.in_favour == "on"
+        betting.bets[name] = {amount=amount, currency=currency, in_favour=in_favour}
+        betting.save_bets(betting.bets)
+
+        res.statusCode = 303
+        res:setHeader("Location", "/")
+        res:finish()
+    end)
+end
+
 http.createServer(function (req, res)
     local ip = tostring(req.socket:getsockname().ip)
     local path = src_dir/assert(req.url)
     print("["..ip.."] "..req.method.." "..req.url)
+
+    if req.method == "POST" then
+        handle_post(req, res, req.url)
+        return
+    end
+
     if path:type() == "directory" then path = path/"index.html.lua" end
     if not path:exists() then path = path:add_extension("html.lua") end
     if not path:exists() then path = path:remove_extension():add_extension("html") end
