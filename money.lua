@@ -46,7 +46,7 @@ export.currencies = {
         country = "Australia"
     },
     ["INR"] = {
-        prefix = "₹",
+        prefix = "",
         exchange_rate_to_usd = 83.03,
         country = "India"
     }
@@ -56,14 +56,14 @@ export.currencies = {
 ---@param currency Currency.Name
 ---@return number
 function export.convert_to_usd(amount, currency)
-    return amount * export.currencies[currency].exchange_rate_to_usd
+    return amount / export.currencies[currency].exchange_rate_to_usd
 end
 
 ---@param amount number
 ---@param currency Currency.Name
 ---@return number
 function export.convert_from_usd(amount, currency)
-    return amount / export.currencies[currency].exchange_rate_to_usd
+    return amount * export.currencies[currency].exchange_rate_to_usd
 end
 
 ---@param amount number
