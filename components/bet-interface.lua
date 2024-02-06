@@ -8,6 +8,8 @@ local xml = xml_gen.xml
 local tablex = require("pl.tablex")
 local betting = require("betting")
 local money = require("money")
+---@type Currency.Name[]
+local money_fmts = tablex.keys(money.currencies)
 
 local yield = coroutine.yield
 
@@ -74,7 +76,13 @@ return xml_gen.component(function ()
             },
             xml.div {class="form-group"} {
                 xml.label {["for"]="currency"} "Currency";
-                xml.input {type="text", class="form-control", id="currency", name="currency", required=true}
+                xml.select {class="form-select", id="currency", name="currency", required=true} {
+                    function ()
+                        for _, currency in ipairs(money_fmts) do
+                            yield(xml.option {value=currency} (currency))
+                        end
+                    end
+                }
             },
             xml.div {class="form-group"} {
                 xml.label {["for"]="in_favour"} "In Favour ";
