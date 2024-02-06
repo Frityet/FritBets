@@ -74,7 +74,9 @@ return xml_gen.component(function ()
 
             xml.div {class="form-group"} {
                 xml.label {["for"]="amount"} "Amount",
-                xml.input {type="number", class="form-control", id="amount", name="amount", required=true}
+                --make sure the amount isn't more than $1000
+                xml.input {type="number", class="form-control", id="amount", name="amount", required=true, max=1000}
+
             },
             xml.div {class="form-group"} {
                 xml.label {["for"]="currency"} "Currency",
