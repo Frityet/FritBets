@@ -1,0 +1,79 @@
+# flyctl launch added from .gitignore
+# Compiled Lua sources
+**/luac.out
+
+# luarocks build files
+**/*.src.rock
+**/*.zip
+**/*.tar.gz
+
+# Object files
+**/*.o
+**/*.os
+**/*.ko
+**/*.obj
+**/*.elf
+
+# Precompiled Headers
+**/*.gch
+**/*.pch
+
+# Libraries
+**/*.lib
+**/*.a
+**/*.la
+**/*.lo
+**/*.def
+**/*.exp
+
+# Shared objects (inc. Windows DLLs)
+**/*.dll
+**/*.so
+**/*.so.*
+**/*.dylib
+
+# Executables
+**/*.exe
+**/*.out
+**/*.app
+**/*.i*86
+**/*.x86_64
+**/*.hex
+
+luarocks
+lua
+lua_modules
+.luarocks
+
+build
+
+**/bets.lua
+
+# flyctl launch added from LuaJS/.gitignore
+LuaJS/**/.vscode
+LuaJS/**/.DS_Store
+LuaJS/dist
+LuaJS/src/luajs.*
+!LuaJS/src/luajs.c
+LuaJS/src/*.[oa]
+LuaJS/src/*.js
+LuaJS/tmp
+LuaJS/**/node_modules
+
+# flyctl launch added from LuaJS/lua/.gitignore
+LuaJS/lua/**/.gitattributes
+
+LuaJS/lua/**/*.so
+LuaJS/lua/**/*.o
+LuaJS/lua/**/*.a
+
+LuaJS/lua/**/manual/manual.html
+
+LuaJS/lua/**/testes/time.txt
+LuaJS/lua/**/testes/time-debug.txt
+
+LuaJS/lua/**/testes/libs/all
+
+LuaJS/lua/**/temp
+LuaJS/lua/**/lua
+fly.toml

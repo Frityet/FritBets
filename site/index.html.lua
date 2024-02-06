@@ -7,10 +7,10 @@ return html {charset="utf8"} {
     bootstrap_head {title="FritBets"};
 
     body {
-        h1 {class="text-center"} "FritBets";
+        h1 {class="text-center text-8xl"} "FritBets";
 
-        main {class="container"} {
-            h1 "Do you think that the girl likes frit?";
+        main {class="mx-auto"} {
+            h1 {class="text-center text-5xl"} "Do you think that the girl likes frit?";
             betting;
         };
     };

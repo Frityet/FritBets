@@ -1,0 +1,26 @@
+# fly.toml app configuration file generated for frit-bets on 2024-02-05T21:38:33-08:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'frit-bets'
+primary_region = 'sea'
+
+[build]
+
+[[mounts]]
+  source = 'fritbetsbets'
+  destination = '/app/bets/'
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  cpu_kind = 'shared'
+  cpus = 1
+  memory_mb = 1024

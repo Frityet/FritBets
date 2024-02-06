@@ -147,7 +147,7 @@ local function handle_post(req, res, url)
 
         local in_favour = data.in_favour == "on"
         betting.bets[name] = { amount = amount, comment = comment, in_favour = in_favour }
-        betting.save_bets(betting.bets)
+        betting.save_bets()
 
         res.statusCode = 303
         res:setHeader("Location", "/")
@@ -155,14 +155,56 @@ local function handle_post(req, res, url)
     end)
 end
 
+---@param req luvit.http.IncomingMessage
+---@param res luvit.http.ServerResponse
+---@param url string
+local function handle_delete(req, res, url)
+    if not url == "/bet" then
+        local s = html_document(not_found)
+        res:setHeader("Content-Length", tostring(#s))
+        res.statusCode = 404
+        res:finish(s)
+        return
+    end
+
+    local body = ""
+    req:on("data", function (chunk) body = body..chunk end)
+
+    req:on("end", function ()
+        local data = querystring.parse(body)
+        local name = data.name
+        local pwd = data.password
+        print("Checking password", pwd, config.password, " to delete ", name)
+        if pwd ~= config.password then
+            local s = html_document(server_error {error="Invalid password"})
+            res:setHeader("Content-Length", tostring(#s))
+            res.statusCode = 500
+            res:finish(s)
+            return
+        end
+
+        betting.bets[name] = nil
+        betting.save_bets()
+
+        res.statusCode = 303
+        res:setHeader("Location", "/")
+        res:finish()
+    end)
+end
+
+local handlers = {
+    ["POST"] = handle_post,
+    ["DELETE"] = handle_delete
+}
+
+
 http.createServer(function (req, res)
     local ip = tostring(req.socket:getsockname().ip)
     local path = src_dir/assert(req.url)
     print("["..ip.."] "..req.method.." "..req.url)
 
-    if req.method == "POST" then
-        handle_post(req, res, req.url)
-        return
+    if handlers[req.method] then
+        return handlers[req.method](req, res, req.url)
     end
 
     if path:type() == "directory" then path = path/"index.html.lua" end
