@@ -174,7 +174,6 @@ local function handle_delete(req, res, url)
         local data = querystring.parse(body)
         local name = data.name
         local pwd = data.password
-        print("Checking password", pwd, config.password, " to delete ", name)
         if pwd ~= config.password then
             local s = html_document(server_error {error="Invalid password"})
             res:setHeader("Content-Length", tostring(#s))
