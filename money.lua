@@ -70,7 +70,7 @@ end
 ---@param currency Currency.Name
 ---@return string
 function export.format(amount, currency)
-    return export.currencies[currency].prefix..tostring(amount).." "..currency
+    return string.format("%s%.2f %s", export.currencies[currency].prefix, amount, currency)
 end
 
 return export
