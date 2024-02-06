@@ -36,6 +36,17 @@ end
 export.bets = export.load_bets()
 
 ---@param pred (fun(bet: Bet, from: string): boolean)?
+function export.bet_count(pred)
+	local count = 0
+	for name, bet in pairs(export.bets) do
+		if not pred or pred(bet, name) then
+			count = count + 1
+		end
+	end
+	return count
+end
+
+---@param pred (fun(bet: Bet, from: string): boolean)?
 ---@return number
 function export.get_total(pred)
 	local total = 0

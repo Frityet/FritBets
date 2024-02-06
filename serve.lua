@@ -135,8 +135,8 @@ local function handle_post(req, res, url)
     req:on("end", function ()
         local data = querystring.parse(body)
         local amount = tonumber(data.amount)
-        local name = data.name
-        local comment = data.comment or ""
+        local name = data.name --[[@as string]]
+        local comment = data.comment --[[@as string]] or ""
         if not amount then
             local s = html_document(server_error {error="Invalid amount"})
             res:setHeader("Content-Length", tostring(#s))

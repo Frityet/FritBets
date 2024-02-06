@@ -53,6 +53,32 @@ return xml_gen.component(function (args, kids)
             }
         };
 
+        xml_gen.style {
+            ["#in_favour"] = {
+                ["display"] = "none"
+            },
+            [".toggle-btn"] = {
+                ["user-select"] = "none"
+            },
+            ["#in_favour:not(:checked) + .toggle-btn"] = {
+                ["background-color"] = "#ff4d4d",
+                ["color"] = "white"
+            },
+            ["#in_favour:not(:checked) + .toggle-btn:after"] = {
+                ["content"] = "'Against'",
+            },
+            ["#in_favour:checked + .toggle-btn"] = {
+                ["background-color"] = "#4CAF50",
+                ["color"] = "white"
+            },
+            ["#in_favour:checked + .toggle-btn:after"] = {
+                ["content"] = "'In favour'",
+            },
+            [".toggle-btn:hover"] = {
+                ["opacity"] = "0.9"
+            }
+        };
+
         xml.script {src="https://cdn.tailwindcss.com"};
         kids;
         luajs;
