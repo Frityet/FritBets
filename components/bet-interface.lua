@@ -5,8 +5,9 @@
 
 local xml_gen = require("xml-generator")
 local xml = xml_gen.xml
-local betting = require("betting")
 local tablex = require("pl.tablex")
+local betting = require("betting")
+local money = require("money")
 
 local yield = coroutine.yield
 
@@ -23,7 +24,7 @@ return xml_gen.component(function ()
 
                         xml.tr {
                             xml.td "Amount";
-                            xml.td {"$", tostring(bet.amount), " ", bet.currency}
+                            xml.td {money.format(bet.amount, bet.currency)}
                         };
 
                         xml.tr {
@@ -37,14 +38,8 @@ return xml_gen.component(function ()
 
 
                 yield(xml.tr {
-                    xml.td "Total: ";
-                    function ()
-                        local total = 0
-                        for _, bet in pairs(betting.bets) do
-                            total = total + bet.amount
-                        end
-                        yield(xml.td {"$", tostring(total)})
-                    end;
+                    xml.td "Total in USD: ";
+                    xml.td {money.format(betting.get_total(), "USD")};
                     xml.br;
                 });
 
@@ -60,7 +55,7 @@ return xml_gen.component(function ()
 
                 yield(xml.tr {
                     xml.td "Percent in Favour: ";
-                    xml.td {tostring(percent_for), "%"}
+                    xml.td {string.format("%.2f%%", percent_for)}
                 });
             end;
         };
@@ -73,17 +68,16 @@ return xml_gen.component(function ()
             },
 
             xml.div {class="form-group"} {
-                xml.label {["for"]="amount"} "Amount",
-                --make sure the amount isn't more than $1000
+                xml.label {["for"]="amount"} "Amount";
                 xml.input {type="number", class="form-control", id="amount", name="amount", required=true, max=1000}
 
             },
             xml.div {class="form-group"} {
-                xml.label {["for"]="currency"} "Currency",
+                xml.label {["for"]="currency"} "Currency";
                 xml.input {type="text", class="form-control", id="currency", name="currency", required=true}
             },
             xml.div {class="form-group"} {
-                xml.label {["for"]="in_favour"} "In Favour ",
+                xml.label {["for"]="in_favour"} "In Favour ";
                 xml.input {class="form-check-input", type="checkbox", id="in_favour", name="in_favour"}
             },
             xml.button {type="submit", class="btn btn-primary"} "Submit"
