@@ -18,22 +18,23 @@ return xml_gen.component(function ()
                     yield (xml.table {
                         xml.tr {
                             xml.td "Gambler";
-                            xml.td {name}
+
+                            xml.td {style="text-align: right", name}
                         };
 
                         xml.tr {
                             xml.td "Amount";
-                            xml.td {string.format("$%.2f", bet.amount)}
+                            xml.td {style="text-align: right", string.format("$%.2f", bet.amount)}
                         };
 
                         xml.tr {
                             xml.td "In Favour?";
-                            xml.td {bet.in_favour and "Yes" or "No"}
+                            xml.td {style="text-align: right", bet.in_favour and "Yes" or "No"}
                         };
 
                         xml.tr {
                             xml.td "Comment";
-                            xml.td {bet.comment or ""}
+                            xml.td {style="text-align: right", bet.comment or ""}
                         };
                     })
 
