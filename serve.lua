@@ -136,6 +136,7 @@ local function handle_post(req, res, url)
         local data = querystring.parse(body)
         local amount = tonumber(data.amount)
         local name = data.name
+        local comment = data.comment or ""
         if not amount then
             local s = html_document(server_error {error="Invalid amount"})
             res:setHeader("Content-Length", tostring(#s))
@@ -144,17 +145,8 @@ local function handle_post(req, res, url)
             return
         end
 
-        local currency = data.currency
-        if not currency then
-            local s = html_document(server_error {error="Invalid currency"})
-            res:setHeader("Content-Length", tostring(#s))
-            res.statusCode = 500
-            res:finish(s)
-            return
-        end
-
         local in_favour = data.in_favour == "on"
-        betting.bets[name] = {amount=amount, currency=currency, in_favour=in_favour}
+        betting.bets[name] = { amount = amount, comment = comment, in_favour = in_favour }
         betting.save_bets(betting.bets)
 
         res.statusCode = 303

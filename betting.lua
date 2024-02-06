@@ -5,7 +5,6 @@
 
 local path = require("path-utilities")
 local pretty = require("pl.pretty")
-local money = require("money")
 
 local export = {}
 
@@ -13,7 +12,7 @@ export.BET_FILE = path.current_directory/"bets.lua";
 
 ---@class Bet
 ---@field amount number
----@field currency Currency.Name
+---@field comment string?
 ---@field in_favour boolean
 
 ---@param bets { [string] : Bet}
@@ -38,7 +37,7 @@ export.bets = export.load_bets()
 function export.get_total()
     local total = 0
     for _, bet in pairs(export.bets) do
-        total = total + money.convert_to_usd(bet.amount, bet.currency)
+        total = total + bet.amount
     end
     return total
 end

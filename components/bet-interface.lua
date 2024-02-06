@@ -7,9 +7,6 @@ local xml_gen = require("xml-generator")
 local xml = xml_gen.xml
 local tablex = require("pl.tablex")
 local betting = require("betting")
-local money = require("money")
----@type Currency.Name[]
-local money_fmts = tablex.keys(money.currencies)
 
 local yield = coroutine.yield
 
@@ -26,12 +23,17 @@ return xml_gen.component(function ()
 
                         xml.tr {
                             xml.td "Amount";
-                            xml.td {money.format(bet.amount, bet.currency)}
+                            xml.td {string.format("$%.2f", bet.amount)}
                         };
 
                         xml.tr {
                             xml.td "In Favour?";
                             xml.td {bet.in_favour and "Yes" or "No"}
+                        };
+
+                        xml.tr {
+                            xml.td "Comment";
+                            xml.td {bet.comment or ""}
                         };
                     })
 
@@ -41,9 +43,11 @@ return xml_gen.component(function ()
 
                 yield(xml.tr {
                     xml.td "Total in USD: ";
-                    xml.td {money.format(betting.get_total(), "USD")};
+                    xml.td {string.format("$%.2f", betting.get_total())};
                     xml.br;
                 });
+
+
 
                 local percent_for = 0
 
@@ -70,22 +74,17 @@ return xml_gen.component(function ()
             },
 
             xml.div {class="form-group"} {
-                xml.label {["for"]="amount"} "Amount";
-                xml.input {type="number", class="form-control", id="amount", name="amount", required=true, max=1000}
+                xml.label {["for"]="amount"} "Amount (in USD)";
+                xml.input {type="number", class="form-control", id="amount", name="amount", required=true, min=5, max=1000}
+            },
 
-            },
             xml.div {class="form-group"} {
-                xml.label {["for"]="currency"} "Currency";
-                xml.select {class="form-select", id="currency", name="currency", required=true} {
-                    function ()
-                        for _, currency in ipairs(money_fmts) do
-                            yield(xml.option {value=currency} (currency))
-                        end
-                    end
-                }
-            },
+                xml.label {["for"]="comment"} "Comment";
+                xml.input {type="text", class="form-control", id="comment", name="comment"}
+            };
+
             xml.div {class="form-group"} {
-                xml.label {["for"]="in_favour"} "In Favour ";
+                xml.label {["for"]="in_favour"} "In Favour? ";
                 xml.input {class="form-check-input", type="checkbox", id="in_favour", name="in_favour"}
             },
             xml.button {type="submit", class="btn btn-primary"} "Submit"

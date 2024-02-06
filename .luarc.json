@@ -38,6 +38,9 @@
         ".luarocks"
     ],
     "workspace.checkThirdParty": false,
+    "diagnostics.globals": [
+        "js"
+    ],
     // "runtime.plugin": "plugin.lua",
     // "misc.parameters": [
     //     "--develop=true"

@@ -53,6 +53,11 @@ return xml_gen.component(function (args, kids)
             }
         };
 
+        xml.script {
+            src="https://cdn.plot.ly/plotly-2.27.0.min.js",
+            charset="utf-8"
+        };
+
         kids;
 
         luajs;
