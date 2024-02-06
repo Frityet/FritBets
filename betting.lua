@@ -8,16 +8,15 @@ local pretty = require("pl.pretty")
 
 local export = {}
 
-export.BET_FILE = path.current_directory / "bets" / "bets.lua";
-
-(export.BET_FILE - 1):create_directory(true)
+export.BET_FILE = path.current_directory/"bets"/"bets.lua";
+export.BET_FILE:parent_directory():create_directory(true)
 
 ---@class Bet
 ---@field amount number
 ---@field comment string?
 ---@field in_favour boolean
 
----@param bets { [string] : Bet}?
+---@param bets { [string] : Bet }?
 function export.save_bets(bets)
 	local bet_file = assert(export.BET_FILE:open("file", "wb")) --[[@as file*]]
 	bet_file:write("return ", pretty.write(bets or export.bets))

@@ -196,7 +196,6 @@ local handlers = {
     ["DELETE"] = handle_delete
 }
 
-
 http.createServer(function (req, res)
     local ip = tostring(req.socket:getsockname().ip)
     local path = src_dir/assert(req.url)

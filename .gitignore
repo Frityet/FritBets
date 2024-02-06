@@ -47,3 +47,8 @@ luac.out
 /build
 
 bets.lua
+
+config.lua
+
+**/*.DS_Store
+config.lua
